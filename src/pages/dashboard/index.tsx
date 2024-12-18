@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
 import Account from "../../components/Account";
 import AddAccountModal from "../../components/AddAccountModal";
+import AddDebtModal from "../../components/AddDebtModal";
 import AddGoalModal from "../../components/AddGoalModal";
+import Chart from "../../components/Chart";
+import Debt from "../../components/Debt";
 import Goal from "../../components/Goal";
 
+// Pick safer ids
 interface AccountData {
   id: number;
   name: string;
   imageUrl: string;
   balance: number;
 }
-
 interface GoalData {
   id: number;
   name: string;
@@ -18,18 +21,27 @@ interface GoalData {
   goalValue: number;
 }
 
+interface DebtData {
+  id: number;
+  name: string;
+  balance: number;
+}
+
 
 const DashBoard = () => {
   const accountsLocalStorageKey: string = "accounts";
   const goalsLocalStorageKey: string = "goals";
+  const debtsLocalStorageKey: string = "debts";
   
-  const [netWorth, setNetWorth] = useState(0);
-  const [assets, setAssets] = useState(0);
-  const [debts, setDebts] = useState(0);
+  const [netWorth, setNetWorth] = useState<number>(0);
+  const [assets, setAssets] = useState<number>(0);
+  const [debtsDisplay, setDebtsDisplay] = useState<number>(0)
   const [isAccountModalOpen, setIsAccountModalOpen] = useState<boolean>(false)
   const [isGoalModalOpen, setIsGoalModalOpen] = useState<boolean>(false);
-  const [isEditingAccount, setIsEditingAccount] = useState(false);
-  const [isEditingGoal, setIsEditingGoal] = useState(false);
+  const [isDebtModalOpen, setIsDebtModalOpen] = useState<boolean>(false);
+  const [isEditingAccount, setIsEditingAccount] = useState<boolean>(false);
+  const [isEditingGoal, setIsEditingGoal] = useState<boolean>(false);
+  const [isEditingDebt, setIsEditingDebt] = useState<boolean>(false);
 
   const [accounts, setAccounts] = useState<AccountData[]>(() => {
     const storedAccounts = localStorage.getItem(accountsLocalStorageKey);
@@ -39,6 +51,11 @@ const DashBoard = () => {
   const [goals, setGoals] = useState<GoalData[]>(() => {
     const storedGoals = localStorage.getItem(goalsLocalStorageKey);
     return storedGoals ? JSON.parse(storedGoals) : [];
+  });
+
+  const [debts, setDebts] = useState<DebtData[]>(() => {
+    const storedDebts = localStorage.getItem(debtsLocalStorageKey);
+    return storedDebts ? JSON.parse(storedDebts) : [];
   });
 
   // Keep everything local w local storage first and then upgrade to DB and accounts later
@@ -72,18 +89,37 @@ const DashBoard = () => {
     setIsGoalModalOpen(false);
   };
 
+  const addDebt = (name: string, balance: number) => {
+    const newDebt: DebtData = {
+      id: debts.length + 1,
+      name,
+      balance
+    };
+    setDebts([...debts, newDebt]);
+    setIsDebtModalOpen(false);
+  };
+
   const handleSave = (type: string) => {
     if (type === 'account') {
       setIsEditingAccount(false);
       localStorage.setItem(accountsLocalStorageKey, JSON.stringify(accounts));
-    } else {
+    } else if (type === 'goal') { 
       setIsEditingGoal(false);
       localStorage.setItem(goalsLocalStorageKey, JSON.stringify(goals));
+    } else {
+      setIsEditingDebt(false);
+      localStorage.setItem(debtsLocalStorageKey, JSON.stringify(debts));
     }
   };
 
   const handleEdit = (type: string) => {
-    type === 'goal' ? setIsEditingGoal(!isEditingGoal) : setIsEditingAccount(!isEditingAccount);
+    if (type === 'goal') {
+      setIsEditingGoal(!isEditingGoal)
+    } else if (type === 'account') {
+      setIsEditingAccount(!isEditingAccount)
+    } else {
+      setIsEditingDebt(!isEditingDebt)
+    }
   };
   
 
@@ -127,12 +163,32 @@ const DashBoard = () => {
     );
   };
 
+  const handleDebtNameChange = (id: number, newName: string) => {
+    setDebts(prev =>
+      prev.map(debt =>
+        debt.id === id ? { ...debt, name: newName } : debt
+      )
+    );
+  };
+
+  const handleDebtBalanceChange = (id: number, newBalance: number) => {
+    setDebts(prev =>
+      prev.map(debt =>
+        debt.id === id ? { ...debt, balance: newBalance } : debt
+      )
+    );
+  };
+
   const handleDeleteAccount = (id: number) => {
     setAccounts((prev) => prev.filter((account) => account.id !== id));
   };
   
   const handleDeleteGoal = (id: number) => {
     setGoals((prev) => prev.filter((goal) => goal.id !== id));
+  };
+
+  const handleDeleteDebt = (id: number) => {
+    setDebts((prev) => prev.filter((debt) => debt.id !== id));
   };
 
   useEffect(() => {
@@ -145,6 +201,11 @@ const DashBoard = () => {
     if (storedGoals) {
       setGoals(JSON.parse(storedGoals) as GoalData[]);
     }
+
+    const storedDebts = localStorage.getItem(debtsLocalStorageKey);
+    if (storedDebts) {
+      setDebts(JSON.parse(storedDebts) as DebtData[]);
+    }
   }, []);
 
   useEffect(() => {
@@ -156,9 +217,15 @@ const DashBoard = () => {
   }, [goals]);
 
   useEffect(() => {
+    localStorage.setItem(debtsLocalStorageKey, JSON.stringify(debts));
+  }, [debts]);
+
+  useEffect(() => {
     const totalAssets = accounts.reduce((sum, account) => sum + account.balance, 0);
+    const totalDebts = debts.reduce((sum, debt) => sum + debt.balance, 0);
     setAssets(totalAssets);
-    setNetWorth(totalAssets - debts);
+    setDebtsDisplay(totalDebts)
+    setNetWorth(totalAssets - totalDebts);
   }, [accounts, debts]);
   
   return (
@@ -179,14 +246,9 @@ const DashBoard = () => {
           </div>
           <div className='flex-1 bg-white p-8 rounded-xl text-2xl font-bold shadow-md'>
             <span>Debts: </span>
-            <span>{formatUSD(debts)}</span>
+            <span>{formatUSD(debtsDisplay)}</span>
           </div>
         </section>
-
-        {/* Chart Visualizer */}
-        {/* <section>
-          Chart
-        </section> */}
 
         {/* These two sections side by side in a 8-4 col format */}
         <section className='lg:flex lg:space-x-5'>
@@ -285,6 +347,61 @@ const DashBoard = () => {
           </div>
         </section>
 
+        <section className='lg:flex lg:space-x-5'>
+          <div className='bg-white shadow-md rounded-md p-5 mt-10 lg:flex-1'>
+          <p className='text-left text-xl font-bold'>Account Distribution</p>
+            {accounts.length > 0 ? (
+              <Chart accounts={accounts} />
+            ) : (
+              <p className="text-gray-500">No accounts available to display.</p>
+            )}
+          </div>
+          <div className='bg-white shadow-md rounded-md p-5 mt-10 lg:flex-[2]'>
+            <div className="flex justify-between">
+              <p className='text-left text-xl font-bold'>Debts</p>
+
+              {debts.length > 0 && (
+                <button
+                  onClick={() => handleEdit('debt')}
+                >
+                  {isEditingGoal ? "Cancel" : "Edit"}
+              </button>
+              )}
+            </div>
+
+            <div id='debt-container' className='py-5 space-y-2'>
+              {debts.map(debt => (
+                <Debt
+                  key={debt.id}
+                  id={debt.id}
+                  name={debt.name}
+                  balance={debt.balance}
+                  isEditing={isEditingDebt}
+                  onDeleteDebt={handleDeleteDebt}
+                  onNameChange={handleDebtNameChange}
+                  onBalanceChange={handleDebtBalanceChange}
+                />
+              ))}
+            </div>
+
+            {isEditingDebt ? (
+              <button
+                onClick={() => handleSave('debt')}
+                className="bg-blue-500 text-white px-4 py-2 rounded mt-5"
+              >
+                Save
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsDebtModalOpen(true)}
+                className="bg-blue-500 text-white px-4 py-2 rounded mt-5"
+              >
+                Add New Debt
+              </button>
+            )}
+          </div>
+        </section>
+
         {isAccountModalOpen && (
           <AddAccountModal
             onClose={() => setIsAccountModalOpen(false)}
@@ -295,6 +412,12 @@ const DashBoard = () => {
           <AddGoalModal
             onClose={() => setIsGoalModalOpen(false)}
             onAddGoal={addGoal}
+          />
+        )}
+        {isDebtModalOpen && (
+          <AddDebtModal
+            onClose={() => setIsDebtModalOpen(false)}
+            onAddDebt={addDebt}
           />
         )}
     </>

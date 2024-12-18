@@ -10,9 +10,9 @@ function App() {
     <>
       {/* Header */}
       {/* Account Login */}
-      <header className='text-right'>
+      {/* <header className='text-right'>
         <p>Sign In</p>
-      </header>
+      </header> */}
 
       <main>
         {/* If signed in render dashboard / else login page */}
