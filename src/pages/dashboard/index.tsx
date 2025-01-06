@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { MdOutlineEdit } from "react-icons/md";
 import Account from "../../components/Account";
 import AddAccountModal from "../../components/AddAccountModal";
 import AddDebtModal from "../../components/AddDebtModal";
@@ -6,7 +7,6 @@ import AddGoalModal from "../../components/AddGoalModal";
 import Chart from "../../components/Chart";
 import Debt from "../../components/Debt";
 import Goal from "../../components/Goal";
-
 // Pick safer ids
 interface AccountData {
   id: number;
@@ -261,7 +261,7 @@ const DashBoard = () => {
                 <button
                   onClick={() => handleEdit('account')}
                 >
-                  {isEditingAccount ? "Cancel" : "Edit"}
+                  {isEditingAccount ? "Cancel" : <MdOutlineEdit />}
                 </button>
               )}
             </div>
