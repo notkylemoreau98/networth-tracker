@@ -6,7 +6,8 @@
     "jsx": "react-jsx",
     "strict": true,
     "types": ["react", "react-dom"],
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "outDir": "dist"
   },
   "include": ["src"]
 }
