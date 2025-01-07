@@ -306,7 +306,7 @@ const DashBoard = () => {
                 <button
                   onClick={() => handleEdit('goal')}
                 >
-                  {isEditingGoal ? "Cancel" : "Edit"}
+                  {isEditingGoal ? "Cancel" : <MdOutlineEdit />}
               </button>
               )}
             </div>
@@ -363,7 +363,7 @@ const DashBoard = () => {
                 <button
                   onClick={() => handleEdit('debt')}
                 >
-                  {isEditingGoal ? "Cancel" : "Edit"}
+                  {isEditingDebt ? "Cancel" : <MdOutlineEdit />}
               </button>
               )}
             </div>
