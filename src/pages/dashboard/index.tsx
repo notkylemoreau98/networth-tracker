@@ -283,14 +283,14 @@ const DashBoard = () => {
             {isEditingAccount ? (
               <button
                 onClick={() => handleSave('account')}
-                className="bg-blue-500 text-white px-4 py-2 rounded mt-5"
+                className="bg-gray-800 text-white px-4 py-2 rounded mt-5"
               >
                 Save
               </button>
             ) : (
               <button
                 onClick={() => setIsAccountModalOpen(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded mt-5"
+                className="bg-gray-800 text-white px-4 py-2 rounded mt-5"
               >
                 Add New Account
               </button>
@@ -331,14 +331,14 @@ const DashBoard = () => {
             {isEditingGoal ? (
               <button
                 onClick={() => handleSave('goal')}
-                className="bg-blue-500 text-white px-4 py-2 rounded mt-5"
+                className="bg-gray-800 text-white px-4 py-2 rounded mt-5"
               >
                 Save
               </button>
             ) : (
               <button
                 onClick={() => setIsGoalModalOpen(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded mt-5"
+                className="bg-gray-800 text-white px-4 py-2 rounded mt-5"
               >
                 Add Goal
               </button>
@@ -386,14 +386,14 @@ const DashBoard = () => {
             {isEditingDebt ? (
               <button
                 onClick={() => handleSave('debt')}
-                className="bg-blue-500 text-white px-4 py-2 rounded mt-5"
+                className="bg-gray-800 text-white px-4 py-2 rounded mt-5"
               >
                 Save
               </button>
             ) : (
               <button
                 onClick={() => setIsDebtModalOpen(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded mt-5"
+                className="bg-gray-800 text-white px-4 py-2 rounded mt-5"
               >
                 Add New Debt
               </button>
