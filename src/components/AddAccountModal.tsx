@@ -34,6 +34,7 @@ const AddAccountModal = ({ onClose, onAddAccount }: AddAccountModalProps) => {
           Account Balance:
           <input
             type="number"
+            min="0"
             value={accountBalance}
             onChange={(e) => setAccountBalance(parseFloat(e.target.value))}
             className="border w-full p-2 mt-1 bg-white"

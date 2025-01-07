@@ -35,6 +35,7 @@ const AddGoalModal = ({ onClose, onAddGoal }: AddGoalModalProps) => {
           Starting Amount:
           <input
             type="number"
+            min="0"
             value={goalStartingValue}
             onChange={(e) => setGoalStartingValue(parseFloat(e.target.value))}
             className="border w-full p-2 mt-1 bg-white"
@@ -45,6 +46,7 @@ const AddGoalModal = ({ onClose, onAddGoal }: AddGoalModalProps) => {
           Goal Amount:
           <input
             type="number"
+            min="0"
             value={goalEndValue}
             onChange={(e) => setGoalEndValue(parseFloat(e.target.value))}
             className="border w-full p-2 mt-1 bg-white"
