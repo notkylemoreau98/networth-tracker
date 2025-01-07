@@ -231,20 +231,19 @@ const DashBoard = () => {
   return (
     <>
       <p className='text-3xl text-left font-bold my-10'>Overview</p>
-       {/* Display Data */}
         {/* Total / Added this Year */}
-        <section className='flex space-x-10'>
-          <div className='flex-1 bg-black text-white p-8 rounded-xl text-2xl font-bold shadow-md'>
+        <section className='md:flex items-center gap-5'>
+          <div className='flex-1 bg-black text-white p-8 rounded-xl text-2xl font-bold shadow-md mb-3'>
             <span>Net Worth:</span>
             {' '}
             <span>{formatUSD(netWorth)}</span>
           </div>
-          <div className='flex-1 bg-white p-8 rounded-xl text-2xl font-bold shadow-md'>
+          <div className='flex-1 bg-white p-8 rounded-xl text-2xl font-bold shadow-md mb-3'>
             {/* Ability to filter between week / month / year */}
             <span>Assets: </span>
             <span>{formatUSD(assets)}</span>
           </div>
-          <div className='flex-1 bg-white p-8 rounded-xl text-2xl font-bold shadow-md'>
+          <div className='flex-1 bg-white p-8 rounded-xl text-2xl font-bold shadow-md mb-3'>
             <span>Debts: </span>
             <span>{formatUSD(debtsDisplay)}</span>
           </div>
@@ -353,7 +352,7 @@ const DashBoard = () => {
             {accounts.length > 0 ? (
               <Chart accounts={accounts} />
             ) : (
-              <p className="text-gray-500">No accounts available to display.</p>
+              <p className="text-gray-500 mt-5">No accounts available to display.</p>
             )}
           </div>
           <div className='bg-white shadow-md rounded-md p-5 mt-10 lg:flex-[2]'>
