@@ -1,29 +1,46 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from 'react';
+import {Amplify} from 'aws-amplify';
+import awsmobile from './aws-exports';
+import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import './App.css';
 import DashBoard from './pages/dashboard';
-import LogIn from './pages/login';
+
+Amplify.configure(awsmobile);
 
 function App() {
-  const [isSignedIn, setIsSignedIn] = useState(true);
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   return (
     <>
       {/* Header */}
-      {/* Account Login */}
-      {/* <header className='text-right'>
-        <p>Sign In</p>
-      </header> */}
-
       <main>
         {/* If signed in render dashboard / else login page */}
         {isSignedIn ? (
           <DashBoard />
         ) : (
-          <LogIn />
+          <Authenticator>
+            {({ signOut }) => (
+                <header className='App-header'>
+                  {/* Sign Out Button */}
+                  <button 
+                    onClick={signOut} 
+                    style={{ 
+                      margin: '20px', 
+                      fontSize: '0.8rem', 
+                      padding: '5px 10px', 
+                      marginTop: '20px'
+                    }}
+                  >
+                    Sign Out
+                  </button>
+                </header>
+            )}
+          </Authenticator>
         )}
       </main>
     </>
   )
 }
 
-export default App
+export default withAuthenticator(App);

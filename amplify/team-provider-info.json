@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-networthtracker-dev-45ddd-authRole",
+      "UnauthRoleArn": "arn:aws:iam::061051255929:role/amplify-networthtracker-dev-45ddd-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::061051255929:role/amplify-networthtracker-dev-45ddd-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-networthtracker-dev-45ddd-deployment",
+      "UnauthRoleName": "amplify-networthtracker-dev-45ddd-unauthRole",
+      "StackName": "amplify-networthtracker-dev-45ddd",
+      "StackId": "arn:aws:cloudformation:us-east-2:061051255929:stack/amplify-networthtracker-dev-45ddd/f8d30c20-ce24-11ef-b453-06dd270bc457",
+      "AmplifyAppId": "d2v07v1eu1yoxk"
+    },
+    "categories": {
+      "auth": {
+        "networthtracker106f2fdc": {}
+      }
+    }
+  }
+}
